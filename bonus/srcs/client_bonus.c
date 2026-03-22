@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maaugust <maaugust@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 15:19:21 by maaugust          #+#    #+#             */
-/*   Updated: 2026/03/22 16:20:08 by maaugust         ###   ########.fr       */
+/*   Updated: 2026/03/22 16:16:41 by maaugust         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "minitalk_bonus.h"
+
+volatile sig_atomic_t	g_ack;
 
 /**
  * @fn static void validate_inputs(pid_t *pid, char **argv)
@@ -49,16 +51,38 @@ static void	validate_inputs(pid_t *pid, char **argv)
 }
 
 /**
+ * @fn static void handle_signal(int sig)
+ * @brief Handles incoming signals sent back from the server.
+ * @details Sets the global acknowledgment flag if SIGUSR1 is received. 
+ * If SIGUSR2 is received, it indicates the full message was 
+ * successfully processed, and the client exits.
+ * @param sig The integer value of the received signal.
+ */
+static void	handle_signal(int sig)
+{
+	if (sig == SIGUSR1)
+		g_ack = ACK;
+	if (sig == SIGUSR2)
+	{
+		write(STDOUT_FILENO, "Message sent successfully!\n", 27);
+		exit(EXIT_SUCCESS);
+	}
+}
+
+/**
  * @fn static void send_signal(pid_t pid, char c, size_t i)
  * @brief Sends a single bit of a character to the server via UNIX signals.
  * @details Extracts the i-th bit of character 'c' and sends SIGUSR1 if the bit 
- * is 1, or SIGUSR2 if the bit is 0. Uses usleep to pace the signals.
+ * is 1, or SIGUSR2 if the bit is 0. Waits for the server's acknowledgment.
  * @param pid The process ID of the target server.
  * @param c   The character whose bit is being sent.
  * @param i   The index of the bit to send (0 to 7).
  */
 static void	send_signal(pid_t pid, char c, size_t i)
 {
+	size_t	time_cnt;
+
+	time_cnt = 0;
 	if (c & (1 << i) && kill(pid, SIGUSR1) == -1)
 	{
 		write(STDERR_FILENO, "Failed to send signal!\n", 23);
@@ -69,7 +93,17 @@ static void	send_signal(pid_t pid, char c, size_t i)
 		write(STDERR_FILENO, "Failed to send signal!\n", 23);
 		exit(EXIT_FAILURE);
 	}
-	usleep(300);
+	while (g_ack == PAUSE && time_cnt < TIMEOUT_MS)
+	{
+		usleep(SLEEP_US);
+		time_cnt++;
+	}
+	if (g_ack != ACK)
+	{
+		write(STDERR_FILENO, "Timeout waiting for ack\n", 24);
+		exit(EXIT_FAILURE);
+	}
+	g_ack = PAUSE;
 }
 
 /**
@@ -99,14 +133,16 @@ static void	send_message(int pid, char *str)
 /**
  * @fn int main(int argc, char **argv)
  * @brief Main entry point for the client program.
- * @details Validates inputs and initiates the one-way message transfer.
+ * @details Validates inputs, configures the signal handlers for SIGUSR1 
+ * and SIGUSR2 using sigaction, and initiates the message transfer.
  * @param argc The number of command-line arguments.
  * @param argv An array of strings representing the command-line arguments.
  * @return     EXIT_SUCCESS on success, or EXIT_FAILURE on error.
  */
 int	main(int argc, char **argv)
 {
-	pid_t	srv_pid;
+	struct sigaction	sa;
+	pid_t				srv_pid;
 
 	if (argc != 3)
 	{
@@ -115,6 +151,18 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	validate_inputs(&srv_pid, argv);
+	g_ack = PAUSE;
+	sa.sa_flags = SA_RESTART;
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGUSR1);
+	sigaddset(&sa.sa_mask, SIGUSR2);
+	sa.sa_handler = &handle_signal;
+	if (sigaction(SIGUSR1, &sa, NULL) == -1
+		|| sigaction(SIGUSR2, &sa, NULL) == -1)
+	{
+		write(STDERR_FILENO, "sigaction failed to setup handlers!\n", 36);
+		return (EXIT_FAILURE);
+	}
 	send_message(srv_pid, argv[2]);
 	return (EXIT_SUCCESS);
 }

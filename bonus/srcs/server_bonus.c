@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maaugust <maaugust@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 15:19:28 by maaugust          #+#    #+#             */
-/*   Updated: 2026/03/22 16:04:27 by maaugust         ###   ########.fr       */
+/*   Updated: 2026/03/22 16:16:45 by maaugust         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "minitalk_bonus.h"
 
 /**
  * @fn static void putnbr(long nbr)
@@ -35,10 +35,28 @@ static void	putnbr(long nbr)
 }
 
 /**
+ * @fn static void send_signal(pid_t pid, int sig)
+ * @brief Sends a specified signal to a target process.
+ * @details Wraps the kill() function and provides error handling if the 
+ * signal fails to send, exiting the program to avoid hanging.
+ * @param pid Process ID of the target to send the signal to.
+ * @param sig The integer value of the signal to send.
+ */
+static void	send_signal(pid_t pid, int sig)
+{
+	if (kill(pid, sig) == -1)
+	{
+		write(STDERR_FILENO, "Failed to send signal!\n", 23);
+		exit(EXIT_FAILURE);
+	}
+}
+
+/**
  * @fn static void handle_char(t_byte *c, size_t *n_bits, pid_t *pid)
  * @brief Evaluates a fully reconstructed character and prints it.
- * @details If the character is the null terminator, it prints a newline and 
- * resets the PID so the server is ready for the next client.
+ * @details If the character is the null terminator, it prints a newline, 
+ * signals the client that the transmission is done, and resets the PID. 
+ * Otherwise, it prints the character and sends an acknowledgment.
  * @param c      Pointer to the reconstructed byte.
  * @param n_bits Pointer to the bit counter, reset to CHAR_BITS after 
  * processing.
@@ -46,15 +64,21 @@ static void	putnbr(long nbr)
  */
 static void	handle_char(t_byte *c, size_t *n_bits, pid_t *pid)
 {
+	pid_t	tmp;
+
+	tmp = *pid;
 	if (!*c)
 	{
 		write(STDOUT_FILENO, "\n", 1);
+		send_signal(tmp, SIGUSR2);
 		*pid = 0;
 	}
 	else
 		write(STDOUT_FILENO, c, sizeof(t_byte));
 	*c = 0;
 	*n_bits = CHAR_BITS;
+	if (tmp)
+		send_signal(tmp, SIGUSR1);
 }
 
 /**
@@ -83,7 +107,11 @@ static void	handle_signal(int sig, siginfo_t *info, void *context)
 	}
 	c |= (sig == SIGUSR1) << --n_bits;
 	if (n_bits == 0)
+	{
 		handle_char(&c, &n_bits, &cli_pid);
+		return ;
+	}
+	send_signal(cli_pid, SIGUSR1);
 }
 
 /**
