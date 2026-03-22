@@ -163,7 +163,7 @@ norminette -R CheckForbiddenSourceHeader srcs/ bonus/ includes/
 * `man 2 pause`
 * [CodeVault - Unix Signals](https://www.youtube.com/playlist?list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY) - Exceptional breakdown of signal handling in C.
 * [Oceano - Minitalk Explanation](https://www.youtube.com/watch?v=XqhY9WHahJQ) - Great conceptual overview tailored specifically for this 42 project.
-* [UNIX Signals Tutorial](https://www.tutorialspoint.com/unix/unix-signals-traps.htm)
+* [UNIX Signals Tutorial](https://www.tutorialspoint.com/unix/unix-signals-traps.htm) - A great written introduction to understanding how signals and traps operate under the hood.
 * [42 Norm V4](https://cdn.intra.42.fr/pdf/pdf/96987/en.norm.pdf) - The strict coding standard for 42 C projects.
 * [Official 42 Norminette Repository](https://github.com/42School/norminette) - The open-source linter enforcing the strict 42 coding standard.
 
