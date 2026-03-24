@@ -157,21 +157,25 @@ norminette -R CheckForbiddenSourceHeader srcs/ bonus/ includes/
 ---
 
 ## 📚 Resources & References
-* `man 2 kill`
-* `man 2 signal`
-* `man 2 sigaction`
-* `man 2 pause`
-* [CodeVault - Unix Signals](https://www.youtube.com/playlist?list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY) - Exceptional breakdown of signal handling in C.
-* [Oceano - Minitalk Explanation](https://www.youtube.com/watch?v=XqhY9WHahJQ) - Great conceptual overview tailored specifically for this 42 project.
-* [UNIX Signals Tutorial](https://www.tutorialspoint.com/unix/unix-signals-traps.htm) - A great written introduction to understanding how signals and traps operate under the hood.
-* **Comprehensive Written Guides (Medium):**
-  * [42 Minitalk Explained](https://medium.com/@oduwoledare/42-minitalk-explained-5b236adc2c24)
-  * [Building a Simple Client-Server Communication Program in C](https://medium.com/@digitalpoolng/42-minitalk-building-a-simple-client-server-communication-program-in-c-a5e6d96c97ec)
-  * [Step-by-Step Guide to Minitalk](https://medium.com/@Kr1sNg/step-by-step-guide-to-minitalk-project-at-school-42-deacf16369ec)
-  * [Minitalk 42 Project Guide](https://medium.com/@gamerazer007/minitalk-42-project-guide-be45d74f8dfa)
-  * [A Simple Client-Server Communication System](https://medium.com/@leogaudin/minitalk-a-simple-client-server-communication-system-57ccc2ae5178)
-* [42 Norm V4](https://cdn.intra.42.fr/pdf/pdf/96987/en.norm.pdf) - The strict coding standard for 42 C projects.
-* [Official 42 Norminette Repository](https://github.com/42School/norminette) - The open-source linter enforcing the strict 42 coding standard.
+
+**System Manuals:**
+* `man 2 kill`, `man 2 signal`, `man 2 sigaction`, `man 2 pause` - Essential Linux programmer's manuals for understanding system calls related to process signaling.
+
+**Articles & Guides:**
+* **[UNIX Signals Tutorial (TutorialsPoint)](https://www.tutorialspoint.com/unix/unix-signals-traps.htm):** A great written introduction to understanding how signals and traps operate under the hood.
+* **[42 Minitalk Explained (Medium)](https://medium.com/@oduwoledare/42-minitalk-explained-5b236adc2c24):** A clear breakdown of the Minitalk project constraints and implementation strategies.
+* **[Building a Simple Client-Server Communication Program in C (Medium)](https://medium.com/@digitalpoolng/42-minitalk-building-a-simple-client-server-communication-program-in-c-a5e6d96c97ec):** A practical guide on setting up the server and client architecture using bitwise operations.
+* **[Step-by-Step Guide to Minitalk (Medium)](https://medium.com/@Kr1sNg/step-by-step-guide-to-minitalk-project-at-school-42-deacf16369ec):** A walkthrough of the project from basic signal handling to full string transmission.
+* **[Minitalk 42 Project Guide (Medium)](https://medium.com/@gamerazer007/minitalk-42-project-guide-be45d74f8dfa):** Comprehensive guide covering edge cases, the use of `sigaction`, and global variables.
+* **[A Simple Client-Server Communication System (Medium)](https://medium.com/@leogaudin/minitalk-a-simple-client-server-communication-system-57ccc2ae5178):** An excellent article dissecting the bit-shifting logic required to pass characters over UNIX signals.
+
+**Video Tutorials:**
+* **[CodeVault - Unix Signals](https://www.youtube.com/playlist?list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY):** Exceptional playlist breaking down process communication and signal handling in C.
+* **[Oceano - Minitalk Explanation](https://www.youtube.com/watch?v=XqhY9WHahJQ):** Great conceptual overview and visualization tailored specifically for this 42 project.
+
+**42 Standards:**
+* **[42 Norm V4](https://cdn.intra.42.fr/pdf/pdf/96987/en.norm.pdf):** The strict coding standard for 42 C projects.
+* **[Official 42 Norminette Repository](https://github.com/42School/norminette):** The open-source linter enforcing the strict 42 coding standard.
 
 ### 🤖 AI Usage & Transparency
 In the spirit of transparency and the learning objectives of the 42 curriculum, here is how AI tools were utilized during this project:
