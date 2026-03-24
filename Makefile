@@ -6,19 +6,19 @@
 #    By: maaugust <maaugust@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/01 15:19:49 by maaugust          #+#    #+#              #
-#    Updated: 2026/03/22 16:23:12 by maaugust         ###   ########.fr        #
+#    Updated: 2026/03/24 18:03:09 by maaugust         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # ============================ PROJECT FILE NAMES ============================ #
 CLIENT         = client
-B_CLIENT       = client_bonus
 SERVER         = server
+B_CLIENT       = client_bonus
 B_SERVER       = server_bonus
 
 # ============================== COMPILER FLAGS ============================== #
 CC             = cc
-CFLAGS         = -Wall -Wextra -Werror
+CFLAGS         = -Wall -Wextra -Werror -MMD -MP
 INCLUDES       = -Iincludes
 B_INCLUDES     = -Ibonus/includes
 RM             = rm -rf
@@ -103,3 +103,7 @@ fclean: clean
 re: fclean all
 
 .PHONY: all bonus clean fclean re
+
+# =============================== DEPENDENCIES =============================== #
+-include $(OBJ:.o=.d)
+-include $(B_OBJ:.o=.d)
