@@ -6,7 +6,7 @@
 /*   By: maaugust <maaugust@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:58:08 by maaugust          #+#    #+#             */
-/*   Updated: 2026/03/22 16:09:20 by maaugust         ###   ########.fr       */
+/*   Updated: 2026/03/25 16:24:22 by maaugust         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@
 /* ========================================================================== */
 
 /**
- * @def CHAR_BITS Total number of bits in a standard character
+ * @def CHAR_BITS
+ * @brief Total number of bits in a standard character
  */
 # define CHAR_BITS	8
 

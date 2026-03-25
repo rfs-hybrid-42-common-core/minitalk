@@ -6,7 +6,7 @@
 /*   By: maaugust <maaugust@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 12:58:08 by maaugust          #+#    #+#             */
-/*   Updated: 2026/03/22 16:07:22 by maaugust         ###   ########.fr       */
+/*   Updated: 2026/03/25 16:24:11 by maaugust         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,27 +28,32 @@
 /* ========================================================================== */
 
 /**
- * @def CHAR_BITS Total number of bits in a standard character
+ * @def CHAR_BITS
+ * @brief CHAR_BITS Total number of bits in a standard character
  */
 # define CHAR_BITS	8
 
 /**
- * @def TIMEOUT_MS Maximum time in milliseconds the client waits for an ACK
+ * @def TIMEOUT_MS
+ * @brief Maximum time in milliseconds the client waits for an ACK
  */
 # define TIMEOUT_MS 3000
 
 /**
- * @def SLEEP_US Microseconds the client sleeps between ACK checks
+ * @def SLEEP_US
+ * @brief Microseconds the client sleeps between ACK checks
  */
 # define SLEEP_US   1000
 
 /**
- * @def PAUSE Client signal status indicating it is waiting for an ACK
+ * @def PAUSE
+ * @brief Client signal status indicating it is waiting for an ACK
  */
 # define PAUSE	0
 
 /**
- * @def ACK Client signal status indicating an acknowledgment was received
+ * @def ACK
+ * @brief Client signal status indicating an acknowledgment was received
  */
 # define ACK	1
 
