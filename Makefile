@@ -6,7 +6,7 @@
 #    By: maaugust <maaugust@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/01 15:19:49 by maaugust          #+#    #+#              #
-#    Updated: 2026/03/24 18:03:09 by maaugust         ###   ########.fr        #
+#    Updated: 2026/03/25 15:37:20 by maaugust         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,25 +40,27 @@ SRC            = $(shell find $(SRC_PATH) -name '*.c')
 B_SRC_PATH     = ./bonus/srcs
 B_SRC          = $(shell find $(B_SRC_PATH) -name '*.c')
 
-# Object files
+# =============================== OBJECT FILES =============================== #
+# Mandatory files
 OBJ_PATH       = ./objs
 OBJ            = $(patsubst $(SRC_PATH)/%.c, $(OBJ_PATH)/%.o, $(SRC))
-
-B_OBJ_PATH     = ./bonus/objs
-B_OBJ          = $(patsubst $(B_SRC_PATH)/%.c, $(B_OBJ_PATH)/%.o, $(B_SRC))
-
 CLIENT_OBJ     = $(filter %client.o, $(OBJ))
 SERVER_OBJ     = $(filter %server.o, $(OBJ))
 
+# Bonus files
+B_OBJ_PATH     = ./bonus/objs
+B_OBJ          = $(patsubst $(B_SRC_PATH)/%.c, $(B_OBJ_PATH)/%.o, $(B_SRC))
 B_CLIENT_OBJ   = $(filter %client_bonus.o, $(B_OBJ))
 B_SERVER_OBJ   = $(filter %server_bonus.o, $(B_OBJ))
 
 # ============================ COMPILATION RULES ============================= #
+# Mandatory files
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 	@mkdir -p $(dir $@)
 	@printf "$(CYAN)Compiling:$(RESET) $(YELLOW)$<$(RESET)\n"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+# Bonus files
 $(B_OBJ_PATH)/%.o: $(B_SRC_PATH)/%.c
 	@mkdir -p $(dir $@)
 	@printf "$(CYAN)Compiling:$(RESET) $(YELLOW)$<$(RESET)\n"
